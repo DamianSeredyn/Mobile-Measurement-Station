@@ -44,7 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+__IO uint32_t Tick;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,27 +82,30 @@ int main(void)
   NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),15, 0));
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  SysTick_Config(4000);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-
+  PWM_GPIO_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  Generate_PWM(20,TIM2);
+	  Delay(1000);
+	  Generate_PWM(75,TIM2);
+	  Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -151,7 +154,20 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void Delay(uint32_t Delay_ms)
+{
 
+	    uint32_t StartTime = Tick;
+	    while(Tick < (StartTime + Delay_ms))
+	    {
+	        // Just wait
+	    }
+}
+
+void SysTick_Handler(void)
+{
+	    Tick++; // Increase system timer
+}
 /* USER CODE END 4 */
 
 /**

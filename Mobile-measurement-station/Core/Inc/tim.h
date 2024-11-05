@@ -33,12 +33,20 @@ extern "C" {
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
+#define TIM2_CH1_OC_Pin LL_GPIO_PIN_0
+#define TIM2_CH1_OC_Port GPIOA
 
+#define PWM_LOGIC2_Pin LL_GPIO_PIN_1
+#define PWM_LOGIC2_Port GPIOA
+
+#define RANGE 250
 /* USER CODE END Private defines */
 
 void MX_TIM2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void PWM_GPIO_init(void);
+void Generate_PWM(uint8_t fulfillment,TIM_TypeDef *TIMx);
 
 /* USER CODE END Prototypes */
 
