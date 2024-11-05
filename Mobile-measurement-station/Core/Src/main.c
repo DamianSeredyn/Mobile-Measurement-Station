@@ -95,6 +95,7 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  MX_TIM3_Init();
   PWM_GPIO_init();
   /* USER CODE END 2 */
 
@@ -102,9 +103,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Generate_PWM(20,TIM2);
+	  Generate_PWM(20,TIM3);
 	  Delay(1000);
-	  Generate_PWM(75,TIM2);
+	  Generate_PWM(75,TIM3);
 	  Delay(1000);
     /* USER CODE END WHILE */
 

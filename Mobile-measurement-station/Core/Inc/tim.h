@@ -45,6 +45,7 @@ extern "C" {
 void MX_TIM2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void MX_TIM3_Init(void);
 void PWM_GPIO_init(void);
 void Generate_PWM(uint8_t fulfillment,TIM_TypeDef *TIMx);
 
