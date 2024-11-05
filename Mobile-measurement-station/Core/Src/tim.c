@@ -21,7 +21,7 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-
+  uint32_t pwm_duty = 50;
 /* USER CODE END 0 */
 
 /* TIM2 init function */
@@ -35,10 +35,10 @@ void MX_TIM2_Init(void)
   /* Peripheral clock enable */
   LL_APB2_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2);
 
-#define TIM2_CH1_OC_Pin LL_GPIO_PIN_0
+#define TIM2_CH1_OC_Pin LL_GPIO_PIN_5
 #define TIM2_CH1_OC_Port GPIOA
 
-  LL_APB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
+  LL_APB1_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
 LL_GPIO_SetPinPull(TIM2_CH1_OC_Port, TIM2_CH1_OC_Pin, LL_GPIO_PULL_NO);
 LL_GPIO_SetPinSpeed(TIM2_CH1_OC_Port, TIM2_CH1_OC_Pin, LL_GPIO_SPEED_FREQ_LOW);
 LL_GPIO_SetAFPin_0_7(TIM2_CH1_OC_Port, TIM2_CH1_OC_Pin, LL_GPIO_AF_1);
@@ -52,9 +52,7 @@ LL_GPIO_SetPinMode(TIM2_CH1_OC_Port, TIM2_CH1_OC_Pin, LL_GPIO_MODE_ALTERNATE);
   LL_TIM_GenerateEvent_UPDATE(TIM2);
   LL_TIM_ClearFlag_UPDATE(TIM2);
 
-  uint32_t pwm_duty = 50;
-
-  LL_TIM_OC_SetCompareCH1(TIM2, 500);
+  LL_TIM_OC_SetCompareCH1(TIM2, pwm_duty);
 
   LL_TIM_OC_SetMode(TIM2, LL_TIM_CHANNEL_CH1, LL_TIM_OCMODE_PWM1);
   LL_TIM_OC_SetPolarity(TIM2, LL_TIM_CHANNEL_CH1, LL_TIM_OCPOLARITY_HIGH);
