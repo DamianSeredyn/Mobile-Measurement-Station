@@ -103,10 +103,10 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Generate_PWM(20,TIM3);
-	  Delay(1000);
-	  Generate_PWM(75,TIM3);
-	  Delay(1000);
+	  Robot_Drive_Forward();
+	  Delay(2000);
+	  Robot_Stop();
+	  Delay(2000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

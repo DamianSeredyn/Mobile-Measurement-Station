@@ -104,7 +104,7 @@ void PWM_GPIO_init(void)
 
 	  LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
 
-	  GPIO_InitStruct.Pin = PWM_LOGIC2_Pin;
+	  GPIO_InitStruct.Pin = PWM_LOGIC2_Pin|PWM_LOGIC1_Pin;
 	  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
 	  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
 	  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
@@ -119,5 +119,39 @@ void Generate_PWM(uint8_t fulfillment,TIM_TypeDef *TIMx)
 	LL_TIM_OC_SetCompareCH1(TIMx, pwm_duty);
 }
 
+void Robot_Drive_Forward(void)
+{
+	Generate_PWM(80,TIM2);
+	Generate_PWM(80,TIM3);
 
+	LL_GPIO_ResetOutputPin(PWM_LOGIC1_Pin, PWM_LOGIC1_Port);
+	LL_GPIO_ResetOutputPin(PWM_LOGIC2_Pin, PWM_LOGIC2_Port);
+}
+
+void Robot_Stop(void)
+{
+	Generate_PWM(0,TIM2);
+	Generate_PWM(0,TIM3);
+
+	LL_GPIO_ResetOutputPin(PWM_LOGIC1_Pin, PWM_LOGIC1_Port);
+	LL_GPIO_ResetOutputPin(PWM_LOGIC2_Pin, PWM_LOGIC2_Port);
+}
+
+void Robot_Turn_Left(void)
+{
+	Generate_PWM(80,TIM2);
+	Generate_PWM(0,TIM3);
+
+	LL_GPIO_ResetOutputPin(PWM_LOGIC1_Pin, PWM_LOGIC1_Port);
+	LL_GPIO_ResetOutputPin(PWM_LOGIC2_Pin, PWM_LOGIC2_Port);
+}
+
+void Robot_Turn_Right(void)
+{
+	Generate_PWM(0,TIM2);
+	Generate_PWM(80,TIM3);
+
+	LL_GPIO_ResetOutputPin(PWM_LOGIC1_Pin, PWM_LOGIC1_Port);
+	LL_GPIO_ResetOutputPin(PWM_LOGIC2_Pin, PWM_LOGIC2_Port);
+}
 /* USER CODE END 1 */
