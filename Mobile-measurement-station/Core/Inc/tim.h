@@ -36,7 +36,10 @@ extern "C" {
 #define TIM2_CH1_OC_Pin LL_GPIO_PIN_0
 #define TIM2_CH1_OC_Port GPIOA
 
-#define PWM_LOGIC2_Pin LL_GPIO_PIN_1
+#define PWM_LOGIC1_Pin LL_GPIO_PIN_1
+#define PWM_LOGIC1_Port GPIOA
+
+#define PWM_LOGIC2_Pin LL_GPIO_PIN_5
 #define PWM_LOGIC2_Port GPIOA
 
 #define RANGE 250
@@ -48,7 +51,10 @@ void MX_TIM2_Init(void);
 void MX_TIM3_Init(void);
 void PWM_GPIO_init(void);
 void Generate_PWM(uint8_t fulfillment,TIM_TypeDef *TIMx);
-
+void Robot_Drive_Forward(void);
+void Robot_Stop(void);
+void Robot_Turn_Left(void);
+void Robot_Turn_Right(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
