@@ -20,9 +20,6 @@
 #include "main.h"
 #include "tim.h"
 #include "gpio.h"
-#include "spi.h"
-#include "nRF24.h"
-#include "radioControl.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -36,8 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define nRF24_TRANSMITER 0
-#define nRF24_RECEIVER 1
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -98,37 +94,20 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
-  MX_SPI2_Init();
-
   /* USER CODE BEGIN 2 */
   MX_TIM3_Init();
   PWM_GPIO_init();
-  init_ControlerButtons();
-
-  nRF24_InitGPIO();
-  nRF24_Init(nRF24_TRANSMITER);
-  nRF24_SetRXAddress(0, (uint8_t *)"Nad",nRF24_TRANSMITER);
-  nRF24_SetTXAddress((uint8_t *)"Odb",nRF24_TRANSMITER);
-  nRF24_TX_Mode(nRF24_TRANSMITER);
-  LL_mDelay(100);
-  nRF24_Init(nRF24_RECEIVER);
-  nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
-  nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
-  nRF24_RX_Mode(nRF24_RECEIVER);
-
-  uint8_t test = robotComandsSend_test(0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  Robot_Emote();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
-
-
   /* USER CODE END 3 */
 }
 

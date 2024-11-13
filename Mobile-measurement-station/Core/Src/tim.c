@@ -154,4 +154,13 @@ void Robot_Turn_Right(void)
 	LL_GPIO_ResetOutputPin(PWM_LOGIC1_Pin, PWM_LOGIC1_Port);
 	LL_GPIO_ResetOutputPin(PWM_LOGIC2_Pin, PWM_LOGIC2_Port);
 }
+
+void Robot_Emote(void)
+{
+	Generate_PWM(80,TIM2);
+	Generate_PWM(80,TIM3);
+
+	LL_GPIO_ResetOutputPin(PWM_LOGIC1_Pin, PWM_LOGIC1_Port);
+	LL_GPIO_SetOutputPin(PWM_LOGIC2_Pin, PWM_LOGIC2_Port);
+}
 /* USER CODE END 1 */
