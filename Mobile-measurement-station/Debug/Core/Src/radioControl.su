@@ -5,4 +5,4 @@
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:875:26:LL_GPIO_IsInputPinSet	16	static
 ../Core/Src/radioControl.c:11:6:init_ControlerButtons	8	static
 ../Core/Src/radioControl.c:27:9:robotComandsSend_test	24	static
-../Core/Src/radioControl.c:48:6:robotComandsSend	24	static
+../Core/Src/radioControl.c:49:6:robotComandsSend	24	static
