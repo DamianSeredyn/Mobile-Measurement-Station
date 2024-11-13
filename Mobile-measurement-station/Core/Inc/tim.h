@@ -55,6 +55,7 @@ void Robot_Drive_Forward(void);
 void Robot_Stop(void);
 void Robot_Turn_Left(void);
 void Robot_Turn_Right(void);
+void Robot_Emote(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
