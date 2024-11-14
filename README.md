@@ -39,7 +39,7 @@
 
 
 ## Jumpers
-To enable board power by external source:
-conenct positive of your power soruce to Vin (Vin range : 7V-12V)
-negative to ground
-move jumper J6 to E5V position
+- To enable board power by external source:
+- conenct positive of your power soruce to Vin (Vin range : 7V-12V)
+- negative to ground
+- move jumper J6 to E5V position
