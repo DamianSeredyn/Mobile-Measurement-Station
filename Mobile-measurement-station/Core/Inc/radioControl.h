@@ -18,6 +18,9 @@
 #define RIGHT_BUTTON_Pin LL_GPIO_PIN_4
 #define RIGHT_GPIO GPIOA
 
+#define STOP_BUTTON_Pin LL_GPIO_PIN_0
+#define STOP_GPIO GPIOA
+
 void init_ControlerButtons(void);
 uint8_t robotComandsSend_test(uint8_t transmitter);
 void robotComandsSend(uint8_t transmitter);
