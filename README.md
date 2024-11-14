@@ -32,4 +32,4 @@
 - PC_1 send 1 (robot forward)
 - PC_0 send 2 (robot left)
 - PA_4 send 3 (robto right) 
-- P send 4 (robot stop) //TO DO
+- PA_0 send 4 (robot stop)
