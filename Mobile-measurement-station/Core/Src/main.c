@@ -105,24 +105,29 @@ int main(void)
   PWM_GPIO_init();
   init_ControlerButtons();
 
-/*  nRF24_InitGPIO();
-  nRF24_Init(nRF24_TRANSMITER);
-  nRF24_SetRXAddress(0, (uint8_t *)"Nad",nRF24_TRANSMITER);
-  nRF24_SetTXAddress((uint8_t *)"Odb",nRF24_TRANSMITER);
-  nRF24_TX_Mode(nRF24_TRANSMITER);
-  LL_mDelay(100);
+  nRF24_InitGPIO();
   nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
   nRF24_RX_Mode(nRF24_RECEIVER);
-
-  uint8_t test = robotComandsSend_test(0);*/
+  uint8_t output = 0;
+  	  uint8_t size = 1;
+  	uint8_t status = nRF24_ReadStatus(nRF24_RECEIVER);
+/*  nRF24_Init(nRF24_RECEIVER);
+  nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
+  nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
+  nRF24_RX_Mode(nRF24_RECEIVER);*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(nRF24_RXAvailible(nRF24_RECEIVER))
+	  	  	  {
+	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
+	  	  	  		  output = output + 1;
+	  	  	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

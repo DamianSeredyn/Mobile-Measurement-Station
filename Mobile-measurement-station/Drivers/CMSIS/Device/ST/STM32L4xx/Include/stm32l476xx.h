@@ -1145,7 +1145,7 @@ typedef struct
 #define SRAM1_SIZE_MAX        (0x00018000UL) /*!< maximum SRAM1 size (up to 96 KBytes) */
 #define SRAM2_SIZE            (0x00008000UL) /*!< SRAM2 size (32 KBytes) */
 
-#define FLASH_SIZE_DATA_REGISTER (0x1FFF75E0UL)
+#define FLASH_SIZE_DATA_REGISTER ((uint32_t)0x1FFF75E0)
 
 #define FLASH_SIZE               (((((*((uint32_t *)FLASH_SIZE_DATA_REGISTER)) & (0x0000FFFFU))== 0x0000FFFFU)) ? (0x400U << 10U) : \
                                   (((*((uint32_t *)FLASH_SIZE_DATA_REGISTER)) & (0x0000FFFFU)) << 10U))
@@ -1478,7 +1478,7 @@ typedef struct
 /******************************************************************************/
 
 /*
- * @brief Specific device feature definitions (not present on all devices in the STM32L4 series)
+ * @brief Specific device feature definitions (not present on all devices in the STM32L4 serie)
  */
 #define ADC_MULTIMODE_SUPPORT                          /*!< ADC feature available only on specific devices: multimode available on devices with several ADC instances */
 
@@ -6154,7 +6154,7 @@ typedef struct
 /*                                                                            */
 /******************************************************************************/
 /*
- * @brief Specific device feature definitions (not present on all devices in the STM32L4 series)
+ * @brief Specific device feature definitions (not present on all devices in the STM32L4 serie)
  */
 #define DAC_CHANNEL2_SUPPORT                           /*!< DAC feature available only on specific devices: DAC channel 2 available */
 
@@ -10514,7 +10514,7 @@ typedef struct
 /*                                                                            */
 /******************************************************************************/
 /*
-* @brief Specific device feature definitions  (not present on all devices in the STM32L4 series)
+* @brief Specific device feature definitions  (not present on all devices in the STM32L4 serie)
 */
 #define RCC_PLLSAI1_SUPPORT
 #define RCC_PLLP_SUPPORT
@@ -13043,6 +13043,9 @@ typedef struct
 #define SDMMC_STA_DATAEND_Pos           (8U)
 #define SDMMC_STA_DATAEND_Msk           (0x1UL << SDMMC_STA_DATAEND_Pos)       /*!< 0x00000100 */
 #define SDMMC_STA_DATAEND               SDMMC_STA_DATAEND_Msk                  /*!<Data end (data counter, SDIDCOUNT, is zero)   */
+#define SDMMC_STA_STBITERR_Pos          (9U)
+#define SDMMC_STA_STBITERR_Msk          (0x1UL << SDMMC_STA_STBITERR_Pos)      /*!< 0x00000200 */
+#define SDMMC_STA_STBITERR              SDMMC_STA_STBITERR_Msk                 /*!<Start bit not detected on all data signals in wide bus mode */
 #define SDMMC_STA_DBCKEND_Pos           (10U)
 #define SDMMC_STA_DBCKEND_Msk           (0x1UL << SDMMC_STA_DBCKEND_Pos)       /*!< 0x00000400 */
 #define SDMMC_STA_DBCKEND               SDMMC_STA_DBCKEND_Msk                  /*!<Data block sent/received (CRC check passed)   */
@@ -13082,11 +13085,6 @@ typedef struct
 #define SDMMC_STA_SDIOIT_Pos            (22U)
 #define SDMMC_STA_SDIOIT_Msk            (0x1UL << SDMMC_STA_SDIOIT_Pos)        /*!< 0x00400000 */
 #define SDMMC_STA_SDIOIT                SDMMC_STA_SDIOIT_Msk                   /*!<SDIO interrupt received                       */
-
-/* Legacy Defines */
-#define SDMMC_STA_STBITERR_Pos          (9U)
-#define SDMMC_STA_STBITERR_Msk          (0x1UL << SDMMC_STA_STBITERR_Pos)      /*!< 0x00000200 */
-#define SDMMC_STA_STBITERR              SDMMC_STA_STBITERR_Msk                 /*!<Start bit not detected on all data signals in wide bus mode */
 
 /*******************  Bit definition for SDMMC_ICR register  *******************/
 #define SDMMC_ICR_CCRCFAILC_Pos         (0U)
