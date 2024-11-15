@@ -28,8 +28,12 @@
 - MISO --> PB_14
 - MOSI --> PB_15
 - SCK  --> PB_13
+###### Receiver
 - CS   --> PB_11
 - CE   --> PB_1
+###### Transmitter
+- CS   --> PB_12
+- CE   --> PB_2
 - IRQ  --> X
 ##### Buttons (Remote)
 - PC_1 send 1 (robot forward)
@@ -40,6 +44,6 @@
 
 ## Jumpers
 - To enable board power by external source:
-- conenct positive of your power soruce to Vin (Vin range : 7V-12V)
+- connect positive of your power soruce to Vin (Vin range : 7V-12V)
 - negative to ground
 - move jumper J6 to E5V position
