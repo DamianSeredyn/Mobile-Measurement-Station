@@ -24,6 +24,10 @@
  #### I2C
 - PB8 SCL
 - PB9 SCD
+ #### UART
+- PA2 TX
+- PA3 RX
+
 #### Remote Transmiter/Reiever
 ![image](https://github.com/user-attachments/assets/1ac823f6-c91b-4a6e-b7b0-fc51b023a784)
 ##### SPI/Radaio/Remote
