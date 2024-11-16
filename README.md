@@ -42,11 +42,14 @@
 
 
 ##### Buttons (Remote)
-
+- PC-0
+- PC-1
+- PC-3
+- PB-0
 
 ## Jumpers
 - To enable board power by external source:
-- connect positive of your power soruce to Vin (Vin range : 7V-12V)
+- connect positive of your power source to Vin (Vin range : 7V-12V)
 - negative to ground
 - move jumper J6 to E5V position
 
