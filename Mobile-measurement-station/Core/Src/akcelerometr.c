@@ -25,9 +25,7 @@ void init_Akcelerometr(void){
 
 	NVIC_SetPriority(EXTI9_5_IRQn, 0);
 	NVIC_EnableIRQ(EXTI9_5_IRQn);
-
-
-	I2C1_reg_write_it(0X0F, 0X30, 127, 1);
+	//I2C1_reg_read_it(00111010, 0x0F, data_ptr, size);
 }
 
 void EXTI4_15_IRQHandler(void)
@@ -35,6 +33,16 @@ void EXTI4_15_IRQHandler(void)
 	if(LL_EXTI_IsActiveFallingFlag_0_31(LL_EXTI_LINE_6) != RESET)
 	{
 		LL_EXTI_ClearFallingFlag_0_31(LL_EXTI_LINE_6);
+	}
+}
+
+void check_accelerometr_alive(void){
+	uint8_t output = 0;
+	I2C1_reg_read_it(0x3A, 0x0F, &output, 1);
+	if (output == 0x41){
+		return 0;
+	}else{
+		return 1;
 	}
 }
 

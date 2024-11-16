@@ -105,36 +105,37 @@ int main(void)
   PWM_GPIO_init();
   MX_I2C1_Init();
 
-  Init_OLED();
+  //Init_OLED();
   init_ControlerButtons();
 
-  nRF24_InitGPIO();
-  nRF24_Init(nRF24_RECEIVER);
+  //nRF24_InitGPIO();
+/*  nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
     nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
     nRF24_RX_Mode(nRF24_RECEIVER);
-  /*  uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);*/
-    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
+    uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);
+    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);*/
     uint8_t input = 128;
   	  uint8_t output = 0;
   	  uint8_t size = 1;
+  	I2C1_reg_read_it(0x3A, 0x0F, &output, 1);
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
   nRF24_RX_Mode(nRF24_RECEIVER);*/
   /* USER CODE END 2 */
-  	  Oled_test();
+  	  //Oled_test();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(nRF24_RXAvailible(nRF24_RECEIVER))
+/*	  if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  {
 	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
 	  	  	  }
 	  if (output == 128){
 		  Robot_Drive_Forward();
-	  }
+	  }*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
