@@ -146,7 +146,7 @@ int main(void)
 			  Robot_Turn_Right();
 		  }
 		  if (tablica[k] == 4){
-			  Robot_Emote();
+			  Robot_Stop();
 		  }
 		  LL_mDelay(1);
 		  k++;
