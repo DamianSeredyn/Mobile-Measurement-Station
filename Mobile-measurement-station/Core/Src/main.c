@@ -23,6 +23,7 @@
 #include "spi.h"
 #include "nRF24.h"
 #include "radioControl.h"
+#include "adc.h"
 #include "bme280.h"
 #include "uart.h"
 
@@ -55,6 +56,8 @@ __IO uint32_t Tick;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+
+void PeriphCommonClock_Config(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -72,7 +75,12 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	void check_adc_voltage(void){
+		// data[0] -  voltage on pin PC5
+		// data[1] -  voltage on pin PC4
+		uint32_t data[2];
+		read_adc(data);
+	}
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -93,6 +101,10 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
+  /* Configure the peripherals common clocks */
+
+  PeriphCommonClock_Config();
+
   /* USER CODE BEGIN SysInit */
   SysTick_Config(4000);
   /* USER CODE END SysInit */
@@ -108,21 +120,19 @@ int main(void)
   MX_TIM3_Init();
   PWM_GPIO_init();
   MX_I2C1_Init();
+  ADC_Init();
   InitRingbuffer();
 
   //Init_OLED();
   //BME280_init();
   init_ControlerButtons();
 
-
-  nRF24_InitGPIO();
-  nRF24_Init(nRF24_RECEIVER);
+  	nRF24_InitGPIO();
+  	nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
     nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
     nRF24_RX_Mode(nRF24_RECEIVER);
-  /*  uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);*/
     uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
-  	  uint8_t output = 0;
   	  uint8_t tablica[100];
   	  for (int j = 0; j < 100; j++){
   		  tablica[j] = 0;
@@ -139,11 +149,11 @@ int main(void)
 
   /* USER CODE END 2 */
 
+
 // RANDOM TESTTS THAT POBOBLY WORK
   	  //Oled_test();
   	  //float test2 = BME280_read_temp();
   	//SendString((uint8_t *)"Test UART\n\r");
-
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -218,6 +228,19 @@ void SystemClock_Config(void)
   LL_Init1msTick(4000000);
 
   LL_SetSystemCoreClock(4000000);
+}
+
+void PeriphCommonClock_Config(void)
+{
+  LL_RCC_PLLSAI1_ConfigDomain_ADC(LL_RCC_PLLSOURCE_MSI, LL_RCC_PLLM_DIV_1, 8, LL_RCC_PLLSAI1R_DIV_2);
+  LL_RCC_PLLSAI1_EnableDomain_ADC();
+  LL_RCC_PLLSAI1_Enable();
+
+   /* Wait till PLLSAI1 is ready */
+  while(LL_RCC_PLLSAI1_IsReady() != 1)
+  {
+
+  }
 }
 
 /* USER CODE BEGIN 4 */
