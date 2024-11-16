@@ -37,11 +37,11 @@
 - CS   --> PB_12
 - CE   --> PB_2
 - IRQ  --> X
+##### KAmodLSM303C (akcelerometr)
+- INT -> PA_7 
+
+
 ##### Buttons (Remote)
-- PC_1 send 1 (robot forward)
-- PC_0 send 2 (robot left)
-- PA_4 send 3 (robto right) 
-- PA_0 send 4 (robot stop)
 
 
 ## Jumpers
