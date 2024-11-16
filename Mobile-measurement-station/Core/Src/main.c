@@ -130,13 +130,13 @@ int main(void)
   while (1)
   {
 	  /*if(nRF24_RXAvailible(nRF24_RECEIVER))
+/*	  if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  {
 	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
 	  	  	  }
 	  if (output == 128){
 		  Robot_Drive_Forward();
 	  }*/
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
