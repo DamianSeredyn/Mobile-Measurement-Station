@@ -21,7 +21,9 @@
 - PA6 PWM2/TIM3
 - PA1 LOGIC1
 - PA5 LOGIC2
-
+ #### I2C
+- PB8 SCL
+- PB( SCD
 #### Remote Transmiter/Reiever
 ![image](https://github.com/user-attachments/assets/1ac823f6-c91b-4a6e-b7b0-fc51b023a784)
 ##### SPI/Radaio/Remote
