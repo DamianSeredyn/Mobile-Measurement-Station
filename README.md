@@ -49,3 +49,8 @@
 - connect positive of your power soruce to Vin (Vin range : 7V-12V)
 - negative to ground
 - move jumper J6 to E5V position
+
+##BE WARE
+
+When you use break points with nrf24 the module might start behaving irrationaly
+For example: When reading data from receiver and using breakpoints it randomly stop reading received data and reads nonsense data
