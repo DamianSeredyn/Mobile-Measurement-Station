@@ -59,7 +59,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint64_t RxpipeAddrs = 0x11223344AA;
 /* USER CODE END 0 */
 
 /**
@@ -105,29 +105,24 @@ int main(void)
   PWM_GPIO_init();
   init_ControlerButtons();
 
-  nRF24_InitGPIO();
-  nRF24_Init(nRF24_RECEIVER);
-  nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
-  nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
-  nRF24_RX_Mode(nRF24_RECEIVER);
-  uint8_t output = 0;
-  	  uint8_t size = 1;
-  	uint8_t status = nRF24_ReadStatus(nRF24_RECEIVER);
-/*  nRF24_Init(nRF24_RECEIVER);
-  nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
-  nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
-  nRF24_RX_Mode(nRF24_RECEIVER);*/
   /* USER CODE END 2 */
+  	 NRF24_init_GPIO();
+	NRF24_begin(GPIOB, LL_GPIO_PIN_1, LL_GPIO_PIN_15);
+	printRadioSettings();
 
+	NRF24_setAutoAck(true);
+	NRF24_setChannel(52);
+	NRF24_setPayloadSize(32);
+	NRF24_openReadingPipe(1, RxpipeAddrs);
+	NRF24_enableDynamicPayloads();
+	NRF24_enableAckPayload();
+
+	NRF24_startListening();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(nRF24_RXAvailible(nRF24_RECEIVER))
-	  	  	  {
-	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
-	  	  	  		  output = output + 1;
-	  	  	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

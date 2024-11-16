@@ -19,7 +19,9 @@ Core/Src/radioControl.o: ../Core/Src/radioControl.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_spi.h \
- ../Core/Inc/radioControl.h ../Core/Inc/nRF24.h ../Core/Inc/main.h
+ ../Core/Inc/radioControl.h ../Core/Inc/nRF24.h \
+ ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h \
+ ../Core/Inc/nRF24L01.h ../Core/Inc/main.h ../Core/Inc/spi.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_crs.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:
@@ -43,4 +45,7 @@ Core/Src/radioControl.o: ../Core/Src/radioControl.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_spi.h:
 ../Core/Inc/radioControl.h:
 ../Core/Inc/nRF24.h:
+../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h:
+../Core/Inc/nRF24L01.h:
 ../Core/Inc/main.h:
+../Core/Inc/spi.h:

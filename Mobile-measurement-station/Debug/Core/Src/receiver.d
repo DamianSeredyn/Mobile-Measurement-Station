@@ -1,4 +1,4 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/receiver.o: ../Core/Src/receiver.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_crs.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h \
@@ -18,11 +18,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_dma.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h \
- ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_spi.h ../Core/Inc/tim.h \
- ../Core/Inc/main.h ../Core/Inc/gpio.h ../Core/Inc/spi.h \
- ../Core/Inc/nRF24.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_spi.h \
+ ../Core/Inc/receiver.h ../Core/Inc/nRF24.h \
  ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h \
- ../Core/Inc/nRF24L01.h ../Core/Inc/spi.h ../Core/Inc/radioControl.h
+ ../Core/Inc/nRF24L01.h ../Core/Inc/main.h ../Core/Inc/spi.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_crs.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:
@@ -44,12 +43,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_tim.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_spi.h:
-../Core/Inc/tim.h:
-../Core/Inc/main.h:
-../Core/Inc/gpio.h:
-../Core/Inc/spi.h:
+../Core/Inc/receiver.h:
 ../Core/Inc/nRF24.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h:
 ../Core/Inc/nRF24L01.h:
+../Core/Inc/main.h:
 ../Core/Inc/spi.h:
-../Core/Inc/radioControl.h:

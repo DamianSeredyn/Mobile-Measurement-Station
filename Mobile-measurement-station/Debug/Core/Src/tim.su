@@ -16,6 +16,7 @@
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:425:22:LL_GPIO_SetPinSpeed	48	static,ignoring_inline_asm
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:496:22:LL_GPIO_SetPinPull	48	static,ignoring_inline_asm
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:568:22:LL_GPIO_SetAFPin_0_7	48	static,ignoring_inline_asm
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:956:22:LL_GPIO_SetOutputPin	16	static
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:985:22:LL_GPIO_ResetOutputPin	16	static
 ../Core/Src/tim.c:28:8:MX_TIM2_Init	8	static
 ../Core/Src/tim.c:64:6:MX_TIM3_Init	32	static
@@ -25,3 +26,4 @@
 ../Core/Src/tim.c:131:6:Robot_Stop	8	static
 ../Core/Src/tim.c:140:6:Robot_Turn_Left	8	static
 ../Core/Src/tim.c:149:6:Robot_Turn_Right	8	static
+../Core/Src/tim.c:158:6:Robot_Emote	8	static

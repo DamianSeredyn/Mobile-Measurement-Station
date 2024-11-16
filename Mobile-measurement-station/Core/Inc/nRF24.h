@@ -1,176 +1,191 @@
 /*
- * nRF24.h
- *
- *  Created on: Aug 6, 2024
- *      Author: Damian
- */
+Library:					NRF24L01/NRF24L01+
+Written by:				Mohamed Yaqoob (MYaqoobEmbedded YouTube Channel)
+Date Written:			10/11/2018
+Last modified:		-/-
+Description:			This is an STM32 device driver library for the NRF24L01 Nordic Radio transceiver, using STM HAL libraries
+
+References:				This library was written based on the Arduino NRF24 Open-Source library by J. Coliz and the NRF24 datasheet
+										- https://github.com/maniacbug/RF24
+										- https://www.sparkfun.com/datasheets/Components/SMD/nRF24L01Pluss_Preliminary_Product_Specification_v1_0.pdf
+
+* Copyright (C) 2018 - M. Yaqoob
+   This is a free software under the GNU license, you can redistribute it and/or modify it under the terms
+   of the GNU General Public Licenseversion 3 as published by the Free Software Foundation.
+
+   This software library is shared with puplic for educational purposes, without WARRANTY and Author is not liable for any damages caused directly
+   or indirectly by this software, read more about this on the GNU General Public License.
+*/
+
+//List of header files
+#include "stm32l476xx.h"   //** Change this according to your STM32 series **//
+#include "nRF24L01.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 #include "main.h"
-#ifndef INC_NRF24_H_
-#define INC_NRF24_H_
+#include "spi.h"
+//1. Pinout Ports and Pin
+//#define nrf_CSN_PORT		GPIOD
+//#define nrf_CSN_PIN			GPIO_PIN_0
 
-//
-//	Configuration
-//
-#define NRF24_DYNAMIC_PAYLOAD	0
-#define NRF24_INTERRUPT_MODE	0
+//#define nrf_CE_PORT			GPIOD
+//#define nrf_CE_PIN			GPIO_PIN_1
 
-//
-// Enums
-//
-typedef enum
-{
-	NRF24_RECEIVED_PACKET,		// 0
-	NRF24_NO_RECEIVED_PACKET,	// 1
-} nRF24_RX_Status;
+//**** TypeDefs ****//
+//1. Power Amplifier function, NRF24_setPALevel()
+typedef enum {
+	RF24_PA_m18dB = 0,
+	RF24_PA_m12dB,
+	RF24_PA_m6dB,
+	RF24_PA_0dB,
+	RF24_PA_ERROR
+}rf24_pa_dbm_e ;
+//2. NRF24_setDataRate() input
+typedef enum {
+	RF24_1MBPS = 0,
+	RF24_2MBPS,
+	RF24_250KBPS
+}rf24_datarate_e;
+//3. NRF24_setCRCLength() input
+typedef enum {
+	RF24_CRC_DISABLED = 0,
+	RF24_CRC_8,
+	RF24_CRC_16
+}rf24_crclength_e;
+//4. Pipe address registers
+static const uint8_t NRF24_ADDR_REGS[7] = {
+		REG_RX_ADDR_P0,
+		REG_RX_ADDR_P1,
+		REG_RX_ADDR_P2,
+		REG_RX_ADDR_P3,
+		REG_RX_ADDR_P4,
+		REG_RX_ADDR_P5,
+		REG_TX_ADDR
+};
+//5. RX_PW_Px registers addresses
+static const uint8_t RF24_RX_PW_PIPE[6] = {
+		REG_RX_PW_P0,
+		REG_RX_PW_P1,
+		REG_RX_PW_P2,
+		REG_RX_PW_P3,
+		REG_RX_PW_P4,
+		REG_RX_PW_P5
+};
+//**** Functions prototypes ****//
+//Microsecond delay function
+void NRF24_DelayMicroSeconds(uint32_t uSec);
 
-typedef enum
-{
-	NRF24_TRANSMITTED_PACKET,		// 0
-	NRF24_NO_TRANSMITTED_PACKET,	// 1
-} nRF24_TX_Status;
+//1. Chip Select function
+void NRF24_csn(int mode);
+//2. Chip Enable
+void NRF24_ce(int level);
+//3. Read single byte from a register
+uint8_t NRF24_read_register(uint8_t reg);
+//4. Read multiple bytes register
+void NRF24_read_registerN(uint8_t reg, uint8_t *buf, uint8_t len);
+//5. Write single byte register
+void NRF24_write_register(uint8_t reg, uint8_t value);
+//6. Write multipl bytes register
+void NRF24_write_registerN(uint8_t reg, const uint8_t* buf, uint8_t len);
+//7. Write transmit payload
+void NRF24_write_payload(const void* buf, uint8_t len);
+//8. Read receive payload
+void NRF24_read_payload(void* buf, uint8_t len);
+//9. Flush Tx buffer
+void NRF24_flush_tx(void);
+//10. Flush Rx buffer
+void NRF24_flush_rx(void);
+//11. Get status register value
+uint8_t NRF24_get_status(void);
 
+//12. Begin function
+void NRF24_begin(GPIO_TypeDef *nrf24PORT, uint16_t nrfCSN_Pin, uint16_t nrfCE_Pin);
+//13. Listen on open pipes for reading (Must call NRF24_openReadingPipe() first)
+void NRF24_startListening(void);
+//14. Stop listening (essential before any write operation)
+void NRF24_stopListening(void);
 
-#define NRF24_CONFIG		0x00
-#define NRF24_EN_AA		0x01
-#define NRF24_EN_RXADDR	0x02
-#define NRF24_SETUP_AW	0x03
-#define NRF24_SETUP_RETR	0x04
-#define NRF24_RF_CH		0x05
-#define NRF24_RF_SETUP	0x06
-#define NRF24_STATUS		0x07
-#define NRF24_OBSERVE_TX	0x08
-#define NRF24_CD			0x09
-#define NRF24_RX_ADDR_P0	0x0A
-#define NRF24_RX_ADDR_P1	0x0B
-#define NRF24_RX_ADDR_P2	0x0C
-#define NRF24_RX_ADDR_P3	0x0D
-#define NRF24_RX_ADDR_P4	0x0E
-#define NRF24_RX_ADDR_P5	0x0F
-#define NRF24_TX_ADDR		0x10
-#define NRF24_RX_PW_P0	0x11
-#define NRF24_RX_PW_P1	0x12
-#define NRF24_RX_PW_P2	0x13
-#define NRF24_RX_PW_P3	0x14
-#define NRF24_RX_PW_P4	0x15
-#define NRF24_RX_PW_P5	0x16
-#define NRF24_FIFO_STATUS	0x17
-#define NRF24_DYNPD		0x1C
-#define NRF24_FEATURE		0x1D
+//15. Write(Transmit data), returns true if successfully sent
+bool NRF24_write( const void* buf, uint8_t len );
+//16. Check for available data to read
+bool NRF24_available(void);
+//17. Read received data
+bool NRF24_read( void* buf, uint8_t len );
+//18. Open Tx pipe for writing (Cannot perform this while Listenning, has to call NRF24_stopListening)
+void NRF24_openWritingPipe(uint64_t address);
+//19. Open reading pipe
+void NRF24_openReadingPipe(uint8_t number, uint64_t address);
+//20 set transmit retries (rf24_Retries_e) and delay
+void NRF24_setRetries(uint8_t delay, uint8_t count);
+//21. Set RF channel frequency
+void NRF24_setChannel(uint8_t channel);
+//22. Set payload size
+void NRF24_setPayloadSize(uint8_t size);
 
+void NRF24_init_GPIO(void);
+//23. Get payload size
+uint8_t NRF24_getPayloadSize(void);
+//24. Get dynamic payload size, of latest packet received
+uint8_t NRF24_getDynamicPayloadSize(void);
+//25. Enable payload on Ackknowledge packet
+void NRF24_enableAckPayload(void);
+//26. Enable dynamic payloads
+void NRF24_enableDynamicPayloads(void);
+void NRF24_disableDynamicPayloads(void);
+//27. Check if module is NRF24L01+ or normal module
+bool NRF24_isNRF_Plus(void) ;
+//28. Set Auto Ack for all
+void NRF24_setAutoAck(bool enable);
+//29. Set Auto Ack for certain pipe
+void NRF24_setAutoAckPipe( uint8_t pipe, bool enable ) ;
+//30. Set transmit power level
+void NRF24_setPALevel( rf24_pa_dbm_e level ) ;
+//31. Get transmit power level
+rf24_pa_dbm_e NRF24_getPALevel( void ) ;
+//32. Set data rate (250 Kbps, 1Mbps, 2Mbps)
+bool NRF24_setDataRate(rf24_datarate_e speed);
+//33. Get data rate
+rf24_datarate_e NRF24_getDataRate( void );
+//34. Set crc length (disable, 8-bits or 16-bits)
+void NRF24_setCRCLength(rf24_crclength_e length);
+//35. Get CRC length
+rf24_crclength_e NRF24_getCRCLength(void);
+//36. Disable CRC
+void NRF24_disableCRC( void ) ;
+//37. power up
+void NRF24_powerUp(void) ;
+//38. power down
+void NRF24_powerDown(void);
+//39. Check if data are available and on which pipe (Use this for multiple rx pipes)
+bool NRF24_availablePipe(uint8_t* pipe_num);
+//40. Start write (for IRQ mode)
+void NRF24_startWrite( const void* buf, uint8_t len );
+//41. Write acknowledge payload
+void NRF24_writeAckPayload(uint8_t pipe, const void* buf, uint8_t len);
+//42. Check if an Ack payload is available
+bool NRF24_isAckPayloadAvailable(void);
+//43. Check interrupt flags
+void NRF24_whatHappened(bool *tx_ok,bool *tx_fail,bool *rx_ready);
+//44. Test if there is a carrier on the previous listenning period (useful to check for intereference)
+bool NRF24_testCarrier(void);
+//45. Test if a signal carrier exists (=> -64dB), only for NRF24L01+
+bool NRF24_testRPD(void) ;
+//46. Reset Status
+void NRF24_resetStatus(void);
+//47. ACTIVATE cmd
+void NRF24_ACTIVATE_cmd(void);
+//48. Get AckPayload Size
+uint8_t NRF24_GetAckPayloadSize(void);
 
-#define NRF24_CMD_R_REGISTER			0x00
-#define NRF24_CMD_W_REGISTER			0x20
-#define NRF24_CMD_R_RX_PAYLOAD		0x61
-#define NRF24_CMD_W_TX_PAYLOAD		0xA0
-#define NRF24_CMD_FLUSH_TX			0xE1
-#define NRF24_CMD_FLUSH_RX			0xE2
-#define NRF24_CMD_REUSE_TX_PL			0xE3
-#define NRF24_CMD_ACTIVATE			0x50
-#define NRF24_CMD_R_RX_PL_WID			0x60
-#define NRF24_CMD_W_ACK_PAYLOAD		0xA8
-#define NRF24_CMD_W_TX_PAYLOAD_NOACK	0xB0
-#define NRF24_CMD_NOP					0xFF
+//**********  DEBUG Functions **********//
+//1. Print radio settings
+void printRadioSettings(void);
+//2. Print Status
+void printStatusReg(void);
+//3. Print Config
+void printConfigReg(void);
+//4. Init Variables
+//5. FIFO Status
+void printFIFOstatus(void);
 
-
-#define NRF24_MASK_RX_DR  6
-#define NRF24_MASK_TX_DS  5
-#define NRF24_MASK_MAX_RT 4
-#define NRF24_EN_CRC      3
-#define NRF24_CRCO        2
-#define NRF24_PWR_UP      1
-#define NRF24_PRIM_RX     0
-#define NRF24_ENAA_P5     5
-#define NRF24_ENAA_P4     4
-#define NRF24_ENAA_P3     3
-#define NRF24_ENAA_P2     2
-#define NRF24_ENAA_P1     1
-#define NRF24_ENAA_P0     0
-#define NRF24_ERX_P5      5
-#define NRF24_ERX_P4      4
-#define NRF24_ERX_P3      3
-#define NRF24_ERX_P2      2
-#define NRF24_ERX_P1      1
-#define NRF24_ERX_P0      0
-#define NRF24_AW          0
-#define NRF24_ARD         4
-#define NRF24_ARC         0
-#define NRF24_PLL_LOCK    4
-#define NRF24_RF_DR_HIGH  3
-#define NRF24_RF_DR_LOW	  5
-#define NRF24_RF_PWR      1
-#define NRF24_LNA_HCURR   0
-#define NRF24_RX_DR       6
-#define NRF24_TX_DS       5
-#define NRF24_MAX_RT      4
-#define NRF24_RX_P_NO     1
-#define NRF24_TX_FULL     0
-#define NRF24_PLOS_CNT    4
-#define NRF24_ARC_CNT     0
-#define NRF24_TX_REUSE    6
-#define NRF24_FIFO_FULL   5
-#define NRF24_TX_EMPTY    4
-#define NRF24_RX_FULL     1
-#define NRF24_RX_EMPTY    0
-#define NRF24_RPD         0x09
-#define NRF24_EN_DPL      2
-
-#define NRF24_CRC_WIDTH_1B   0
-#define NRF24_CRC_WIDTH_2B  1
-
-#define NRF24_PAYLOAD_SIZE 1
-#define NRF24_ADDR_SIZE	3
-
-#define NRF24_RF_DR_250KBPS   2
-#define NRF24_RF_DR_1MBPS  0
-#define NRF24_RF_DR_2MBPS  1
-
-#define NRF24_PA_PWR_M18dBM  0
-#define NRF24_PA_PWR_M12dBM 1
-#define NRF24_PA_PWR_M6dBM  2
-#define NRF24_PA_PWR_0dBM 3
-
-void nRF24_Init(uint8_t device);
-void nRF24_InitGPIO(void);
-void nRF24_Delay(uint8_t time);
-void nRF24_SetPALevel(uint8_t lev,uint8_t device);
-void nRF24_SetDataRate(uint8_t dr,uint8_t device);
-void nRF24_EnableCRC(uint8_t onoff,uint8_t device);
-uint8_t nRF24_ReadConfig(uint8_t device);
-void nRF24_WriteConfig(uint8_t conf,uint8_t device);
-void nRF24_SetCRCLength(uint8_t crcl,uint8_t device);
-void nRF24_SetRetries(uint8_t ard, uint8_t arc,uint8_t device);
-void nRF24_SetPayloadSize(uint8_t pipe, uint8_t size,uint8_t device);
-void nRF24_SetRFChannel(uint8_t channel,uint8_t device);
-void nRF24_EnablePipe(uint8_t pipe, uint8_t onoff,uint8_t device);
-void nRF24_AutoACK(uint8_t pipe, uint8_t onoff,uint8_t device);
-void nRF24_SetAddressWidth(uint8_t size,uint8_t device);
-void nRF24_EnableRXDataReadyIRQ(uint8_t onoff,uint8_t device);
-void nRF24_EnableTXDataSentIRQ(uint8_t onoff,uint8_t device);
-void nRF24_EnableMaxRetransmitIRQ(uint8_t onoff,uint8_t device);
-void nRF24_ClearInterrupts(uint8_t device);
-uint8_t nRF24_ReadStatus(uint8_t device);
-void nRF24_WriteStatus(uint8_t st,uint8_t device);
-void nRF24_FlushRX(uint8_t device);
-void nRF24_FlushTX(uint8_t device);
-nRF24_TX_Status nRF24_SendPacket(uint8_t* Data, uint8_t Size,uint8_t device);
-void nRF24_SetTXAddress(uint8_t* address,uint8_t device);
-void nRF24_TX_Mode(uint8_t device);
-void nRF24_WriteTXPayload(uint8_t * data, uint8_t size,uint8_t device);
-void nRF24_WaitTX(uint8_t device);
-void nRF24_SetRXAddress(uint8_t pipe, uint8_t* address,uint8_t device);
-void nRF24_RX_Mode(uint8_t device);
-uint8_t nRF24_ReadFifoStatus(uint8_t device);
-void nRF24_WriteFifoStatus(uint8_t st,uint8_t device);
-uint8_t nRF24_IsBitSetInFifoStatus(uint8_t Bit,uint8_t device);
-uint8_t nRF24_IsTxReuse(uint8_t device);
-uint8_t nRF24_IsTxFull(uint8_t device);
-uint8_t nRF24_IsTxEmpty(uint8_t device);
-uint8_t nRF24_IsRxFull(uint8_t device);
-uint8_t nRF24_IsRxEmpty(uint8_t device);
-uint8_t nRF24_GetDynamicPayloadSize(uint8_t device);
-nRF24_RX_Status nRF24_ReceivePacket(uint8_t* Data, uint8_t *Size,uint8_t device);
-uint8_t nRF24_RXAvailible(uint8_t device);
-void nRF24_ReadRXPaylaod(uint8_t *data, uint8_t *size,uint8_t device);
-uint8_t nRF24_Test(uint8_t transmitter);
-
-#endif /* INC_NRF24_H_ */
