@@ -60,8 +60,8 @@ all: main-build
 main-build: Mobile-measurement-station.elf secondary-outputs
 
 # Tool invocations
-Mobile-measurement-station.elf Mobile-measurement-station.map: $(OBJS) $(USER_OBJS) C:\Users\szymo\Desktop\hackaton\Mobile-Measurement-Station\Mobile-measurement-station\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Mobile-measurement-station.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\szymo\Desktop\hackaton\Mobile-Measurement-Station\Mobile-measurement-station\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Mobile-measurement-station.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Mobile-measurement-station.elf Mobile-measurement-station.map: $(OBJS) $(USER_OBJS) D:\hackaton\Mobile-measurement-station\STM32L476RGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Mobile-measurement-station.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\hackaton\Mobile-measurement-station\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Mobile-measurement-station.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

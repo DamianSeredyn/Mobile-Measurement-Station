@@ -4,5 +4,5 @@
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:496:22:LL_GPIO_SetPinPull	3
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_ll_gpio.h:875:26:LL_GPIO_IsInputPinSet	2
 ../Core/Src/radioControl.c:11:6:init_ControlerButtons	1
-../Core/Src/radioControl.c:27:9:robotComandsSend_test	3
-../Core/Src/radioControl.c:48:6:robotComandsSend	5
+../Core/Src/radioControl.c:31:9:robotComandsSend_test	3
+../Core/Src/radioControl.c:53:6:robotComandsSend	6

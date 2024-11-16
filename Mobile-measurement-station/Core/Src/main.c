@@ -107,12 +107,14 @@ int main(void)
 
   nRF24_InitGPIO();
   nRF24_Init(nRF24_RECEIVER);
-  nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
-  nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
-  nRF24_RX_Mode(nRF24_RECEIVER);
-  uint8_t output = 0;
+    nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
+    nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
+    nRF24_RX_Mode(nRF24_RECEIVER);
+  /*  uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);*/
+    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
+    uint8_t input = 128;
+  	  uint8_t output = 0;
   	  uint8_t size = 1;
-  	uint8_t status = nRF24_ReadStatus(nRF24_RECEIVER);
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
@@ -126,8 +128,10 @@ int main(void)
 	  if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  {
 	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
-	  	  	  		  output = output + 1;
 	  	  	  }
+	  if (output == 128){
+		  Robot_Drive_Forward();
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
