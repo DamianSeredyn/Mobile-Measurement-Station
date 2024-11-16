@@ -27,7 +27,9 @@ void init_Akcelerometr(void){
 	NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 
+	I2C1_reg_write_it(0X0F, 0X22, 8, 1);
 	I2C1_reg_write_it(0X0F, 0X30, 127, 1);
+
 }
 
 void EXTI4_15_IRQHandler(void)
