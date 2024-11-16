@@ -106,15 +106,20 @@ int main(void)
   init_ControlerButtons();
 
   nRF24_InitGPIO();
-  nRF24_Init(nRF24_RECEIVER);
-    nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
-    nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
-    nRF24_RX_Mode(nRF24_RECEIVER);
-  /*  uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);*/
-    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
-    uint8_t input = 128;
-  	  uint8_t output = 0;
-  	  uint8_t size = 1;
+  nRF24_Init(nRF24_TRANSMITER);
+    nRF24_SetRXAddress(0, (uint8_t *)"Nad",nRF24_TRANSMITER);
+    nRF24_SetTXAddress((uint8_t *)"Odb",nRF24_TRANSMITER);
+    nRF24_TX_Mode(nRF24_TRANSMITER);
+    LL_mDelay(100);
+    uint8_t input2 = 128;
+          uint8_t output = 0;
+          uint8_t size = 1;
+
+          LL_mDelay(50);
+        uint8_t status = nRF24_ReadStatus(nRF24_TRANSMITER);
+          nRF24_SendPacket(&input2, size, nRF24_TRANSMITER);
+        uint8_t status2 = nRF24_ReadStatus(nRF24_TRANSMITER);
+          LL_mDelay(50);
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
@@ -125,13 +130,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(nRF24_RXAvailible(nRF24_RECEIVER))
-	  	  	  {
-	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
-	  	  	  }
-	  if (output == 128){
-		  Robot_Drive_Forward();
-	  }
+	  robotComandsSend(nRF24_TRANSMITER);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
