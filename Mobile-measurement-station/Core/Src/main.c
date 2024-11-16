@@ -99,11 +99,13 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_SPI2_Init();
-  MX_I2C1_Init();
 
   /* USER CODE BEGIN 2 */
   MX_TIM3_Init();
   PWM_GPIO_init();
+  MX_I2C1_Init();
+
+  Init_OLED();
   init_ControlerButtons();
 
   nRF24_InitGPIO();
@@ -121,7 +123,7 @@ int main(void)
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
   nRF24_RX_Mode(nRF24_RECEIVER);*/
   /* USER CODE END 2 */
-
+  	  Oled_test();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)

@@ -28,12 +28,13 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include <stdbool.h>
-#include "font.h"
 #include "stm32l4xx_ll_bus.h"
 #include "stm32l4xx_ll_rcc.h"
 #include "stm32l4xx_ll_gpio.h"
 #include "stm32l4xx_ll_i2c.h"
 #include "stm32l4xx_ll_utils.h"
+#include <stdbool.h>
+#include "font.h"
 
 /* USER CODE BEGIN Includes */
 #define I2C1_SCL_PIN LL_GPIO_PIN_8
