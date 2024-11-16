@@ -23,6 +23,7 @@
 #include "spi.h"
 #include "nRF24.h"
 #include "radioControl.h"
+#include "bme280.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -105,8 +106,9 @@ int main(void)
   PWM_GPIO_init();
   MX_I2C1_Init();
 
-  Init_OLED();
+  //Init_OLED();
   init_ControlerButtons();
+  BME280_init();
 
   nRF24_InitGPIO();
   nRF24_Init(nRF24_RECEIVER);
@@ -118,12 +120,15 @@ int main(void)
     uint8_t input = 128;
   	  uint8_t output = 0;
   	  uint8_t size = 1;
+
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
   nRF24_RX_Mode(nRF24_RECEIVER);*/
+
   /* USER CODE END 2 */
-  	  Oled_test();
+  	  //Oled_test();
+  	  float test2 = BME280_read_temp();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
