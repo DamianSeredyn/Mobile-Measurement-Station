@@ -115,9 +115,14 @@ int main(void)
     nRF24_RX_Mode(nRF24_RECEIVER);
   /*  uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);*/
     uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
-    uint8_t input = 128;
   	  uint8_t output = 0;
+  	  uint8_t tablica[100];
+  	  for (int j = 0; j < 100; j++){
+  		  tablica[j] = 0;
+  	  }
   	  uint8_t size = 1;
+  	  uint8_t i = 0;
+  	  uint8_t k = 0;
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
@@ -129,12 +134,27 @@ int main(void)
   while (1)
   {
 	  if(nRF24_RXAvailible(nRF24_RECEIVER))
-	  	  	  {
-	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
-	  	  	  }
-	  if (output == 128){
-		  Robot_Drive_Forward();
+	  	  	  	  {
+		  i++;
+		nRF24_ReadRXPaylaod(&tablica[i], &size, nRF24_RECEIVER);
 	  }
+	  if ( i != 0 && i != k){
+		  if (tablica[k] == 1){
+			  Robot_Drive_Forward();
+		  }
+		  if (tablica[k] == 2){
+			  Robot_Turn_Left();
+		  }
+		  if (tablica[k] == 3){
+			  Robot_Turn_Right();
+		  }
+		  if (tablica[k] == 4){
+			  Robot_Stop();
+		  }
+		  LL_mDelay(1);
+		  k++;
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
