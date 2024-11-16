@@ -108,17 +108,17 @@ int main(void)
 
   //Init_OLED();
   init_ControlerButtons();
-  init_Akcelerometr();
-/*  nRF24_InitGPIO();
-  nRF24_Init(nRF24_RECEIVER);
+
+  //nRF24_InitGPIO();
+/*  nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
     nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
     nRF24_RX_Mode(nRF24_RECEIVER);
     uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);
-    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
+    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);*/
     uint8_t input = 128;
   	  uint8_t output = 0;
-  	  uint8_t size = 1;*/
+  	  uint8_t size = 1;
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
@@ -127,9 +127,10 @@ int main(void)
   	  //Oled_test();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  	  init_accelerometr();
   while (1)
   {
-	  /*if(nRF24_RXAvailible(nRF24_RECEIVER))
+	  read_accelerometr();
 /*	  if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  {
 	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
