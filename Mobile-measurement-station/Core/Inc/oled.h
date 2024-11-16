@@ -23,6 +23,8 @@
 #include <stdbool.h>
 #include "font.h"
 #include "i2c.h"
+#include <stdio.h>
+
 
 #define OLED_ADRESS 0x78
 #define OLED_COMMAND 0x00
@@ -64,6 +66,7 @@ void Oled_UpdateScreen(void);
  * Basically it turns the display on and off
  */
 void Oled_test(void);
+void Oled_print_Gyroscope(void);
 
 void ssd1306_InvertColors(void);
 void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color);
