@@ -24,6 +24,7 @@
 #include "nRF24.h"
 #include "radioControl.h"
 #include "bme280.h"
+#include "uart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -97,18 +98,22 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_SPI2_Init();
+  InitUART();
 
   /* USER CODE BEGIN 2 */
   MX_TIM3_Init();
   PWM_GPIO_init();
   MX_I2C1_Init();
+  InitRingbuffer();
 
   //Init_OLED();
+  //BME280_init();
   init_ControlerButtons();
-  BME280_init();
+
 
   nRF24_InitGPIO();
   nRF24_Init(nRF24_RECEIVER);
@@ -133,8 +138,13 @@ int main(void)
   nRF24_RX_Mode(nRF24_RECEIVER);*/
 
   /* USER CODE END 2 */
+
+// RANDOM TESTTS THAT POBOBLY WORK
   	  //Oled_test();
-  	  float test2 = BME280_read_temp();
+  	  //float test2 = BME280_read_temp();
+  	//SendString((uint8_t *)"Test UART\n\r");
+
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
