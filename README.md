@@ -23,7 +23,7 @@
 - PA5 LOGIC2
  #### I2C
 - PB8 SCL
-- PB( SCD
+- PB9 SCD
 #### Remote Transmiter/Reiever
 ![image](https://github.com/user-attachments/assets/1ac823f6-c91b-4a6e-b7b0-fc51b023a784)
 ##### SPI/Radaio/Remote
