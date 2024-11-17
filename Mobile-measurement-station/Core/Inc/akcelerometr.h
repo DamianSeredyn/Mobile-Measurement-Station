@@ -44,6 +44,7 @@ void init_ControlerButtons(void);
 bool check_accelerometr_alive(void);
 void read_accelerometr(void);
 void init_accelerometr(void);
+void read_accelerometr_bump(void);
 
 
 

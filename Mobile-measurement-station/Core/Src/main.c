@@ -128,9 +128,10 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   	  init_accelerometr();
+  	  accelerometr_bump_init();
   while (1)
   {
-	  read_accelerometr();
+	  read_accelerometr_bump();
 /*	  if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  {
 	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);

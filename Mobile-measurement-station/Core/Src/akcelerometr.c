@@ -138,3 +138,35 @@ float count_data(float data, float data2){
 	    return position_x[1];
 }
 
+void accelerometr_bump_init(void){
+
+	LL_IOP_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
+
+	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_6, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_6, LL_GPIO_PULL_NO);
+	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_6, LL_GPIO_SPEED_FREQ_LOW);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT);
+}
+
+void read_accelerometr_bump(void){
+	uint8_t input[3] = {OUT_X_H_A, OUT_Y_H_A, OUT_Z_H_A};
+	uint8_t output[3];
+	for (int i = 0; i < 3; i++){
+	I2C1_reg_read_it(ACCEL_ADRESS, input[i], &output[i], 1);
+	while(i2c_transfer_complete != true);
+	}
+	int i = 0;
+	if(output[1]<63){
+		LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_6);
+		return 0;
+	}
+	else if(output[0]>252 || (output[0]>8 && output[0]<50)){
+		LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_6);
+		return 0;
+	}
+	LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_6);
+
+
+
+}
+
