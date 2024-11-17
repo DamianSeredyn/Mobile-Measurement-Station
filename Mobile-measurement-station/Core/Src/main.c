@@ -117,15 +117,15 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_SPI2_Init();
+
   /* USER CODE BEGIN 2 */
   PWM_GPIO_init();
   MX_I2C1_Init();
   ADC_Init();
 
 
- // Init_OLED();
-  //BME280_init();
-  //init_ControlerButtons();
+  Init_OLED();
+  BME280_init();
 
   	nRF24_InitGPIO();
   	nRF24_Init(nRF24_RECEIVER);
@@ -151,9 +151,12 @@ int main(void)
 
 
 // RANDOM TESTTS THAT POBOBLY WORK
-  	 // Oled_test();
   	  //float test2 = BME280_read_temp();
   	//SendString((uint8_t *)"Test UART\n\r");
+
+  	  //PrintMeasurmentsFromBme280();
+  	  Oled_print_dec();
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

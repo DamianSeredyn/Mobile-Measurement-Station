@@ -24,6 +24,7 @@
 #include "font.h"
 #include "i2c.h"
 #include <stdio.h>
+#include "bme280.h"
 
 
 #define OLED_ADRESS 0x78
@@ -66,12 +67,14 @@ void Oled_UpdateScreen(void);
  */
 void Oled_test(void);
 void Oled_print_Gyroscope(uint8_t* response);
+void Oled_print_dec(void);
 
 void ssd1306_InvertColors(void);
 void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color);
 char ssd1306_WriteString(const char* str, FontDef Font, SSD1306_COLOR color);
 char ssd1306_WriteChar(char ch, FontDef Font, SSD1306_COLOR color);
 void ssd1306_SetCursor(uint8_t x, uint8_t y);
+void PrintMeasurmentsFromBme280(void);
 
 #endif
 
