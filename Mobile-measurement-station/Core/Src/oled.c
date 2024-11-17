@@ -226,3 +226,19 @@ void Oled_print_Gyroscope(uint8_t* response)
 
 }
 
+void PrintMeasurmentsFromBme280(void)
+{
+    float temp = BME280_read_temp();
+    float press = BME280_read_pressure()/100;
+    char buffer1[50];
+    char buffer2[50];
+    sprintf(buffer1, "Temperature: %f", temp);
+    sprintf(buffer2, "Pressure: %f", press);
+    ssd1306_SetCursor(0, 0);
+    ssd1306_WriteString(buffer1, Font_7x10, White);
+    ssd1306_SetCursor(0, Font_7x10.FontHeight);
+    ssd1306_WriteString(buffer2, Font_7x10, White);
+
+    Oled_UpdateScreen();
+
+}
