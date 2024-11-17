@@ -112,18 +112,18 @@ int main(void)
   /* Initialize all configured peripherals */
 
   MX_GPIO_Init();
+  MX_TIM5_Init();
   MX_TIM2_Init();
-  MX_SPI2_Init();
-  InitUART();
-
-  /* USER CODE BEGIN 2 */
   MX_TIM3_Init();
+  MX_TIM4_Init();
+  MX_SPI2_Init();
+  /* USER CODE BEGIN 2 */
   PWM_GPIO_init();
   MX_I2C1_Init();
   ADC_Init();
 
 
-  Init_OLED();
+ // Init_OLED();
   //BME280_init();
   //init_ControlerButtons();
 
@@ -147,7 +147,6 @@ int main(void)
   nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
   nRF24_RX_Mode(nRF24_RECEIVER);*/
 
-
   /* USER CODE END 2 */
 
 
@@ -156,12 +155,8 @@ int main(void)
   	  //float test2 = BME280_read_temp();
   	//SendString((uint8_t *)"Test UART\n\r");
 
-
-
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
   while (1)
   {
 	  if(nRF24_RXAvailible(nRF24_RECEIVER))
@@ -272,6 +267,8 @@ void SysTick_Handler(void)
 {
 	    Tick++; // Increase system timer
 }
+
+
 /* USER CODE END 4 */
 
 /**
