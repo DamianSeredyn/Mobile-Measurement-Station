@@ -44,9 +44,9 @@ extern "C" {
 
 #define RANGE 250
 /* USER CODE END Private defines */
-
+void MX_TIM1_Init(void);
 void MX_TIM2_Init(void);
-
+void MX_TIM4_Init(void);
 /* USER CODE BEGIN Prototypes */
 void MX_TIM3_Init(void);
 void PWM_GPIO_init(void);
