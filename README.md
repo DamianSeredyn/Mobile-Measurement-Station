@@ -42,7 +42,7 @@
 - CE   --> PB_2
 - IRQ  --> X
 ##### KAmodLSM303C (akcelerometr)
-- INT -> PA_7 
+- PA7 test diod 
 
 ##### mikrofon
 - out - PC4 lub PC5 (oba piny zajęte, w razie czego potem można jednego usunąć)
