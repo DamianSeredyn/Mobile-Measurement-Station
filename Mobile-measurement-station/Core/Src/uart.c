@@ -6,118 +6,90 @@
  */
 #include "uart.h"
 #include <stdio.h>
+#include <string.h>
 
-#define BUFFER_SIZE 128
+buffer_uart rx_buffer;
+buffer_uart tx_buffer;
 
-ringbuf_u8_s ringbuffer;
-uint8_t buffer[BUFFER_SIZE];
-uint8_t command_buffer[BUFFER_SIZE];
-uint32_t command_length = 0;
 
-void InitRingbuffer(void){
-	ringbuf_u8_init(&ringbuffer, buffer, BUFFER_SIZE);
-}
-
-void TransmitData(void)
+void InitUART(void)
 {
-	uint8_t tx_data;
-	if(ringbuf_u8_dequeue(&ringbuffer, &tx_data) != 1){
-		LL_USART_DisableIT_TXE(USART2);
-	}else{
-		LL_USART_TransmitData8(USART2, tx_data);
-	}
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  LL_USART_InitTypeDef USART_InitStruct = {0};
+
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  LL_RCC_SetUSARTClockSource(LL_RCC_USART2_CLKSOURCE_PCLK1);
+
+  /* Peripheral clock enable */
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART2);
+
+  LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
+  /**USART2 GPIO Configuration
+  PA2   ------> USART2_TX
+  PA3   ------> USART2_RX
+  */
+  GPIO_InitStruct.Pin = USART_TX_Pin|USART_RX_Pin;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Alternate = LL_GPIO_AF_7;
+  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN USART2_Init 1 */
+  NVIC_SetPriority(USART2_IRQn, 0);
+  NVIC_EnableIRQ(USART2_IRQn);
+
+  /* USER CODE END USART2_Init 1 */
+  USART_InitStruct.BaudRate = 115200;
+  USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
+  USART_InitStruct.StopBits = LL_USART_STOPBITS_1;
+  USART_InitStruct.Parity = LL_USART_PARITY_NONE;
+  USART_InitStruct.TransferDirection = LL_USART_DIRECTION_TX_RX;
+  USART_InitStruct.HardwareFlowControl = LL_USART_HWCONTROL_NONE;
+  USART_InitStruct.OverSampling = LL_USART_OVERSAMPLING_16;
+  LL_USART_Init(USART2, &USART_InitStruct);
+  LL_USART_ConfigAsyncMode(USART2);
+  LL_USART_Enable(USART2);
+  LL_USART_EnableIT_IDLE(USART2);
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
 }
 
-void ReciveData(void) {
-    uint8_t rx_data = LL_USART_ReceiveData8(USART2);
-
-    if (rx_data == '\r' || rx_data == '\n')
-    {
-        command_buffer[command_length] = '\0';
-
-        ProcessCommand(command_buffer);
-
-        command_length = 0;
-    }
-    else
-    {
-        if (command_length < BUFFER_SIZE - 1)
-        {
-            command_buffer[command_length++] = rx_data;
-        }
-    }
-}
-
-void ProcessCommand(uint8_t* cmd) {
-    char response[BUFFER_SIZE];
-
-    	snprintf(response, BUFFER_SIZE, "RECIEVED: %s\n\r", cmd);
-
-    ringbuf_u8_queue_array(&ringbuffer, (uint8_t*)response, strlen(response));
-
-    LL_USART_EnableIT_TXE(USART2);
-
-}
-
-
+/* USER CODE BEGIN 1 */
 void USART2_IRQHandler(void)
 {
 	if(LL_USART_IsEnabledIT_TXE(USART2) && LL_USART_IsActiveFlag_TXE(USART2))
 	{
-		TransmitData();
+		if(tx_buffer.count == sizeof(tx_buffer))
+		{
+			tx_buffer.count = 0;
+			LL_USART_DisableIT_TXE(USART2);
+
+			return;
+		}
+
+		LL_USART_TransmitData8(USART2, tx_buffer.data[tx_buffer.count]);
+		tx_buffer.count++;
 	}
 	if(LL_USART_IsEnabledIT_RXNE(USART2) && LL_USART_IsActiveFlag_RXNE(USART2))
 	{
-		ReciveData();
+		rx_buffer.data[rx_buffer.count] = LL_USART_ReceiveData8(USART2);
+	        rx_buffer.count++;
 	}
+
 	if(LL_USART_IsEnabledIT_IDLE(USART2) && LL_USART_IsActiveFlag_IDLE(USART2))
 	{
 		LL_USART_ClearFlag_IDLE(USART2);
 
+		//obsługa zdarzenia po odebraniu całej ramki
 	}
 }
-
-void InitUART(void) {
-
-    LL_AHB2_GRP1_EnableClock(LL_AHB2_GRP1_PERIPH_GPIOA);
-
-    LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_2, LL_GPIO_MODE_ALTERNATE);
-    LL_GPIO_SetAFPin_0_7(GPIOA, LL_GPIO_PIN_2, LL_GPIO_AF_7); // AF7
-    LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_2, LL_GPIO_SPEED_FREQ_HIGH);
-    LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_2, LL_GPIO_PULL_NO);
-
-    LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_3, LL_GPIO_MODE_ALTERNATE);
-    LL_GPIO_SetAFPin_0_7(GPIOA, LL_GPIO_PIN_3, LL_GPIO_AF_7); // AF7
-    LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_3, LL_GPIO_SPEED_FREQ_HIGH);
-    LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_3, LL_GPIO_PULL_NO);
-
-    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART2);
-
-    LL_USART_ConfigCharacter(USART2, LL_USART_DATAWIDTH_8B, LL_USART_PARITY_NONE, LL_USART_STOPBITS_1);
-    LL_USART_SetBaudRate(USART2, SystemCoreClock, LL_USART_OVERSAMPLING_16, 115200);
-    LL_USART_ConfigAsyncMode(USART2);
-
-    NVIC_SetPriority(USART2_IRQn, 0);
-    NVIC_EnableIRQ(USART2_IRQn);
-
-    LL_USART_EnableDirectionTx(USART2);
-    LL_USART_EnableDirectionRx(USART2);
-
-    LL_USART_Enable(USART2);
-
-    LL_USART_ClearFlag_IDLE(USART2);
-    LL_USART_EnableIT_RXNE(USART2);
-    LL_USART_EnableIT_TXE(USART2);
-    LL_USART_EnableIT_IDLE(USART2);
-
-}
-
-
-void SendString(const uint8_t *str)
-{
-	const uint8_t *recieved = str;
-
-	ringbuf_u8_queue_array(&ringbuffer, recieved, strlen((const char *)recieved));
-
-    LL_USART_EnableIT_TXE(USART2);
-}
+/* USER CODE END 1 */
