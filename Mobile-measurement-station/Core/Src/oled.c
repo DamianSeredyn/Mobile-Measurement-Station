@@ -10,6 +10,8 @@ static uint8_t SSD1306_Buffer[OLED_WIDTH * OLED_HEIGHT / 8];
 
 static SSD1306_t SSD1306;
 
+static uint8_t OLEDinited = 0;
+
 void Init_OLED(void){
 	uint8_t i;
 	LL_mDelay(100);
@@ -52,6 +54,7 @@ void Init_OLED(void){
 
 	Oled_Fill(0x00);
 	Oled_UpdateScreen();
+	OLEDinited = 1;
 
 }
 
@@ -181,6 +184,22 @@ void ssd1306_SetCursor(uint8_t x, uint8_t y)
 void Oled_test(void)
 {
 	char buffer1[50] = {"Super fajny led!"};
+		char buffer2[50];
+		ssd1306_SetCursor(0, 0);
+		ssd1306_WriteString(buffer1, Font_7x10, White);
+		ssd1306_SetCursor(0, Font_7x10.FontHeight);
+		ssd1306_WriteString(buffer2, Font_7x10, White);
+
+		Oled_UpdateScreen();
+
+}
+
+
+void Oled_print_Gyroscope(uint8_t* response)
+{
+		if(OLEDinited == 0)
+			return;
+	  	char buffer1[50] = {"Uart przyszedl!"};
 		char buffer2[50];
 		ssd1306_SetCursor(0, 0);
 		ssd1306_WriteString(buffer1, Font_7x10, White);

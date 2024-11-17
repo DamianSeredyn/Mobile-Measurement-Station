@@ -121,11 +121,11 @@ int main(void)
   PWM_GPIO_init();
   MX_I2C1_Init();
   ADC_Init();
-  InitRingbuffer();
 
-  //Init_OLED();
+
+  Init_OLED();
   //BME280_init();
-  init_ControlerButtons();
+  //init_ControlerButtons();
 
   	nRF24_InitGPIO();
   	nRF24_Init(nRF24_RECEIVER);
@@ -151,7 +151,7 @@ int main(void)
 
 
 // RANDOM TESTTS THAT POBOBLY WORK
-  	  //Oled_test();
+  	 // Oled_test();
   	  //float test2 = BME280_read_temp();
   	//SendString((uint8_t *)"Test UART\n\r");
 
@@ -176,10 +176,19 @@ int main(void)
 		  }
 		  if (tablica[k] == 4){
 			  Robot_Stop();
+
 		  }
-		  LL_mDelay(1);
+		  Delay(1);
 		  k++;
+
 	  }
+
+	  if(i==99)
+	  {
+		  i = 1;
+		  k = 0;
+	  }
+
 
     /* USER CODE END WHILE */
 

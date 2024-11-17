@@ -33,6 +33,9 @@ void spi_cs_set_high(void);
 void spi_cs_set_low(void);
 void spi_cs2_set_high(void);
 void spi_cs2_set_low(void);
+void spi_cs3_set_high(void);
+void spi_cs3_set_low(void);
+
 void spi_write_data(uint8_t *data, uint32_t size);
 void spi_read_data(uint8_t *data, uint32_t size);
 

@@ -192,6 +192,16 @@ void spi_cs2_set_low(void)
 	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_11);
 }
 
+void spi_cs3_set_high(void)
+{
+	LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+}
+
+void spi_cs3_set_low(void)
+{
+	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
+}
+
 void spi_write_data(uint8_t *data, uint32_t size)
 {
 	uint32_t count = 0;
