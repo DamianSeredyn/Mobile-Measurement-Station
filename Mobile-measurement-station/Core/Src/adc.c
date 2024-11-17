@@ -19,6 +19,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "adc.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <math.h>
+
+#define ADC_RESOLUTION 4096.0  // 12-bit ADC
+#define VREF 3300          // Napięcie referencyjne ADC
+#define N 100                // Liczba próbek dla RMS
 
 /* USER CODE BEGIN 0 */
 
@@ -130,9 +137,51 @@ void read_adc(uint32_t *data){
 
 }
 
+
+// Funkcja do obliczenia RMS
+double calculate_rms(uint32_t channel) {
+    uint32_t data[2];
+    double sum_squared = 0.0;
+
+    for (int i = 0; i < N; i++) {
+        read_adc(data); // Odczytaj próbki do tablicy
+        double voltage = (data[channel] / ADC_RESOLUTION) * VREF; // Przeskaluj ADC do napięcia
+        sum_squared += voltage * voltage; // Sumuj kwadraty napięć
+    }
+
+    return sqrt(sum_squared / N); // Oblicz RMS
+}
+
+void write_adc_table(uint32_t *output){
+
+	for (int i = 0; i < 50; i++){
+	uint32_t data[2];
+	read_adc(data);
+
+	output[i] = data[1];
+	Delay(10);
+	}
+}
+
+uint32_t decybeloza (double calculated_rms){
+	// potem wepnij to w jedną funkcję i nie zapomnij bo jesteś za spany
+	float reference = 1.1666;
+    double difference = fabs(calculated_rms - reference); // śmieszna funkcja do różnicy napięć
+    return 20.0 * log10(difference / reference);
+
+}
+
+uint32_t adc_to_dB(void){
+  	double rms_voltage = calculate_rms(1);
+  	uint32_t dB_value = decybeloza (rms_voltage);
+
+  	return dB_value;
+}
+
+
 void adc_conversion_complete_callback(void)
 {
-	  data_buf[conv_cnt] = CONVERT_ADC_TO_MV(LL_ADC_REG_ReadConversionData12(ADC1)) + 200;
+	  data_buf[conv_cnt] = CONVERT_ADC_TO_MV(LL_ADC_REG_ReadConversionData12(ADC1));
 
 	  conv_cnt++;
 }

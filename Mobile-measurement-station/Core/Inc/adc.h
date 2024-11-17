@@ -55,6 +55,13 @@ void ADC_Init(void);
 void read_adc(uint32_t *data);
 void adc_conversion_complete_callback(void);
 void adc_sequence_complete_callback(void);
+
+void write_adc_table(uint32_t *output);
+
+double sqrt_custom(double number);
+double calculate_rms(uint32_t channel);
+
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
