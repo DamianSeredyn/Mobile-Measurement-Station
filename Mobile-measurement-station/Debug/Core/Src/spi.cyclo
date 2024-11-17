@@ -41,7 +41,9 @@
 ../Core/Src/spi.c:180:6:spi_cs_set_low	1
 ../Core/Src/spi.c:185:6:spi_cs2_set_high	1
 ../Core/Src/spi.c:190:6:spi_cs2_set_low	1
-../Core/Src/spi.c:195:6:spi_write_data	6
-../Core/Src/spi.c:224:6:spi_read_data	7
-../Core/Src/spi.c:257:6:spi_it_transmit_callback	8
-../Core/Src/spi.c:298:6:spi_it_receive_callback	6
+../Core/Src/spi.c:195:6:spi_cs3_set_high	1
+../Core/Src/spi.c:200:6:spi_cs3_set_low	1
+../Core/Src/spi.c:205:6:spi_write_data	6
+../Core/Src/spi.c:234:6:spi_read_data	7
+../Core/Src/spi.c:267:6:spi_it_transmit_callback	8
+../Core/Src/spi.c:308:6:spi_it_receive_callback	6

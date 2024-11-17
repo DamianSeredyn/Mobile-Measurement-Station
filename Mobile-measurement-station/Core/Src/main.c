@@ -112,11 +112,11 @@ int main(void)
   /* Initialize all configured peripherals */
 
   MX_GPIO_Init();
-  MX_TIM5_Init();
+/*  MX_TIM5_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_SPI2_Init();
+  MX_SPI2_Init();*/
 
   /* USER CODE BEGIN 2 */
   PWM_GPIO_init();
@@ -126,7 +126,7 @@ int main(void)
 
   Init_OLED();
   BME280_init();
-
+/*
   	nRF24_InitGPIO();
   	nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
@@ -140,7 +140,7 @@ int main(void)
   	  uint8_t size = 1;
 
   	  uint8_t i = 0;
-  	  uint8_t k = 0;
+  	  uint8_t k = 0;*/
 
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
@@ -162,7 +162,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(nRF24_RXAvailible(nRF24_RECEIVER))
+	  /*if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  	  {
 		  i++;
 		nRF24_ReadRXPaylaod(&tablica[i], &size, nRF24_RECEIVER);
@@ -190,7 +190,15 @@ int main(void)
 	  {
 		  i = 1;
 		  k = 0;
-	  }
+	  }*/
+	  LL_mDelay(2000);
+		Oled_Fill(0x00);
+			  Oled_UpdateScreen();;
+	  Oled_print_dec();
+	  LL_mDelay(2000);
+	  Oled_Fill(0x00);
+	  Oled_UpdateScreen();
+	  PrintMeasurmentsFromBme280();
 
 
     /* USER CODE END WHILE */
