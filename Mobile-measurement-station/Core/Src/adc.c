@@ -139,14 +139,14 @@ void read_adc(uint32_t *data){
 
 
 // Funkcja do obliczenia RMS
-double calculate_rms(uint32_t channel) {
+float calculate_rms(uint32_t channel) {
     uint32_t data[2];
-    double sum_squared = 0.0;
+    float sum_squared = 0.0;
 
     for (int i = 0; i < N; i++) {
         read_adc(data); // Odczytaj próbki do tablicy
-        double voltage = (data[channel] / ADC_RESOLUTION) * VREF; // Przeskaluj ADC do napięcia
-        sum_squared += voltage * voltage; // Sumuj kwadraty napięć
+        float voltage = (data[channel] / ADC_RESOLUTION) * VREF; // Przeskaluj ADC do napięcia
+        sum_squared += voltage * voltage;
     }
 
     return sqrt(sum_squared / N); // Oblicz RMS
@@ -163,20 +163,21 @@ void write_adc_table(uint32_t *output){
 	}
 }
 
-uint32_t decybeloza (double calculated_rms){
+uint32_t decybeloza (float calculated_rms){
 	// potem wepnij to w jedną funkcję i nie zapomnij bo jesteś za spany
 	float reference = 1.1666;
-    double difference = fabs(calculated_rms - reference); // śmieszna funkcja do różnicy napięć
+    float difference = fabs(calculated_rms - reference); // śmieszna funkcja do różnicy napięć
     return 20.0 * log10(difference / reference);
 
 }
 
 uint32_t adc_to_dB(void){
-  	double rms_voltage = calculate_rms(1);
-  	uint32_t dB_value = decybeloza (rms_voltage);
+  	float rms_voltage = calculate_rms(1);
+  	uint32_t dB_value = decybeloza(rms_voltage);
 
   	return dB_value;
 }
+
 
 
 void adc_conversion_complete_callback(void)

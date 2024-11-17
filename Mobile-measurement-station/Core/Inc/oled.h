@@ -66,6 +66,7 @@ void Oled_UpdateScreen(void);
  */
 void Oled_test(void);
 void Oled_print_Gyroscope(uint8_t* response);
+void Oled_print_dec(void);
 
 void ssd1306_InvertColors(void);
 void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color);

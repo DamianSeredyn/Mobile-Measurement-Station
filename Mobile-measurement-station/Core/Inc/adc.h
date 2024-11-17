@@ -57,9 +57,10 @@ void adc_conversion_complete_callback(void);
 void adc_sequence_complete_callback(void);
 
 void write_adc_table(uint32_t *output);
+uint32_t decybeloza (float calculated_rms);
+float calculate_rms(uint32_t channel);
 
-double sqrt_custom(double number);
-double calculate_rms(uint32_t channel);
+uint32_t adc_to_dB(void);
 
 
 /* USER CODE END Prototypes */

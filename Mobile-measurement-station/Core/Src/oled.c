@@ -194,6 +194,22 @@ void Oled_test(void)
 
 }
 
+void Oled_print_dec(void)
+{
+	uint32_t dec = adc_to_dB();
+	char buffer1[50];
+	char buffer2[50] = {"Super fajny led!"};
+
+
+	sprintf(buffer1, "dB: %u", dec);
+	ssd1306_SetCursor(0, 0);
+	ssd1306_WriteString(buffer1, Font_7x10, White);
+	ssd1306_SetCursor(0, Font_7x10.FontHeight);
+	ssd1306_WriteString(buffer2, Font_7x10, White);
+
+	Oled_UpdateScreen();
+
+}
 
 void Oled_print_Gyroscope(uint8_t* response)
 {

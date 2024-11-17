@@ -152,10 +152,8 @@ int main(void)
 
 
 // RANDOM TESTTS THAT POBOBLY WORK
-  	 // Oled_test();
   	  //float test2 = BME280_read_temp();
   	//SendString((uint8_t *)"Test UART\n\r");
-
 
 
 
