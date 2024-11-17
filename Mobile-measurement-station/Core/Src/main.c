@@ -27,7 +27,6 @@
 #include "bme280.h"
 #include "uart.h"
 #include "akcelerometr.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -113,11 +112,11 @@ int main(void)
   /* Initialize all configured peripherals */
 
   MX_GPIO_Init();
-  MX_TIM5_Init();
+/*  MX_TIM5_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_SPI2_Init();
+  MX_SPI2_Init();*/
 
   /* USER CODE BEGIN 2 */
   PWM_GPIO_init();
@@ -125,22 +124,24 @@ int main(void)
   ADC_Init();
 
 
-  //Init_OLED();
-  init_ControlerButtons();
-
-  //nRF24_InitGPIO();
-/*  nRF24_Init(nRF24_RECEIVER);
+  Init_OLED();
+  BME280_init();
+  init_accelerometr();
+/*
+  	nRF24_InitGPIO();
+  	nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
     nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
     nRF24_RX_Mode(nRF24_RECEIVER);
-    uint8_t stat1 = nRF24_ReadStatus(nRF24_TRANSMITER);
-    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);*/
-    uint8_t input = 128;
-  	  uint8_t output = 0;
+    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
+  	  uint8_t tablica[100];
+  	  for (int j = 0; j < 100; j++){
+  		  tablica[j] = 0;
+  	  }
   	  uint8_t size = 1;
 
   	  uint8_t i = 0;
-  	  uint8_t k = 0;
+  	  uint8_t k = 0;*/
 
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
@@ -160,17 +161,52 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  	  init_accelerometr();
   while (1)
   {
-	  read_accelerometr();
-/*	  if(nRF24_RXAvailible(nRF24_RECEIVER))
-	  	  	  {
-	  	  	  		  nRF24_ReadRXPaylaod(&output, &size, nRF24_RECEIVER);
-	  	  	  }
-	  if (output == 128){
-		  Robot_Drive_Forward();
+	  /*if(nRF24_RXAvailible(nRF24_RECEIVER))
+	  	  	  	  {
+		  i++;
+		nRF24_ReadRXPaylaod(&tablica[i], &size, nRF24_RECEIVER);
+	  }
+	  if ( i != 0 && i != k){
+		  if (tablica[k] == 1){
+			  Robot_Drive_Forward();
+		  }
+		  if (tablica[k] == 2){
+			  Robot_Turn_Left();
+		  }
+		  if (tablica[k] == 3){
+			  Robot_Turn_Right();
+		  }
+		  if (tablica[k] == 4){
+			  Robot_Stop();
+
+		  }
+		  Delay(1);
+		  k++;
+
+	  }
+
+	  if(i==99)
+	  {
+		  i = 1;
+		  k = 0;
 	  }*/
+	  LL_mDelay(2000);
+		Oled_Fill(0x00);
+			  Oled_UpdateScreen();;
+	  Oled_print_dec();
+	  LL_mDelay(2000);
+	  Oled_Fill(0x00);
+	  Oled_UpdateScreen();
+	  PrintMeasurmentsFromBme280();
+/*	  LL_mDelay(2000);
+	  read_accelerometr();
+	  float i1 = return_x();
+	  float i2 = return_y();*/
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
