@@ -115,8 +115,8 @@ int main(void)
 /*  MX_TIM5_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  MX_TIM4_Init();
-  MX_SPI2_Init();*/
+  MX_TIM4_Init();*/
+  MX_SPI2_Init();
 
   /* USER CODE BEGIN 2 */
   PWM_GPIO_init();
@@ -124,15 +124,26 @@ int main(void)
   ADC_Init();
 
 
-  Init_OLED();
-  BME280_init();
-/*
+/*  Init_OLED();
+  BME280_init();*/
+
   	nRF24_InitGPIO();
   	nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
     nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
     nRF24_RX_Mode(nRF24_RECEIVER);
-    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
+  	nRF24_Init(nRF24_TRANSMITER);
+    nRF24_SetRXAddress(0, (uint8_t *)"Nad",nRF24_TRANSMITER);
+    nRF24_SetTXAddress((uint8_t *)"Odb",nRF24_TRANSMITER);
+    nRF24_TX_Mode(nRF24_TRANSMITER);
+    uint8_t dsad = nRF24_ReadStatus(nRF24_TRANSMITER);
+    uint8_t dsad2 = nRF24_ReadStatus(nRF24_RECEIVER);
+    if (nRF24_Test(nRF24_TRANSMITER) == 129){
+    	LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);
+    }
+    LL_mDelay(100);
+    LL_mDelay(100);
+/*    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
   	  uint8_t tablica[100];
   	  for (int j = 0; j < 100; j++){
   		  tablica[j] = 0;
@@ -155,7 +166,7 @@ int main(void)
   	//SendString((uint8_t *)"Test UART\n\r");
 
   	  //PrintMeasurmentsFromBme280();
-  	  Oled_print_dec();
+  	  //Oled_print_dec();
 
 
   /* Infinite loop */
@@ -191,14 +202,14 @@ int main(void)
 		  i = 1;
 		  k = 0;
 	  }*/
-	  LL_mDelay(2000);
+/*	  LL_mDelay(2000);
 		Oled_Fill(0x00);
 			  Oled_UpdateScreen();;
 	  Oled_print_dec();
 	  LL_mDelay(2000);
 	  Oled_Fill(0x00);
 	  Oled_UpdateScreen();
-	  PrintMeasurmentsFromBme280();
+	  PrintMeasurmentsFromBme280();*/
 
 
     /* USER CODE END WHILE */
@@ -216,43 +227,52 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
-  while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_0)
-  {
-  }
-  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
-  while (LL_PWR_IsActiveFlag_VOS() != 0)
-  {
-  }
-  LL_RCC_MSI_Enable();
+	  LL_FLASH_SetLatency(LL_FLASH_LATENCY_4);
+	  while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_4)
+	  {
+	  }
+	  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+	  while (LL_PWR_IsActiveFlag_VOS() != 0)
+	  {
+	  }
+	  LL_RCC_MSI_Enable();
 
-   /* Wait till MSI is ready */
-  while(LL_RCC_MSI_IsReady() != 1)
-  {
+	   /* Wait till MSI is ready */
+	  while(LL_RCC_MSI_IsReady() != 1)
+	  {
 
-  }
-  LL_RCC_MSI_EnableRangeSelection();
-  LL_RCC_MSI_SetRange(LL_RCC_MSIRANGE_6);
-  LL_RCC_MSI_SetCalibTrimming(0);
-  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_MSI);
+	  }
+	  LL_RCC_MSI_EnableRangeSelection();
+	  LL_RCC_MSI_SetRange(LL_RCC_MSIRANGE_6);
+	  LL_RCC_MSI_SetCalibTrimming(0);
+	  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_MSI, LL_RCC_PLLM_DIV_1, 40, LL_RCC_PLLR_DIV_2);
+	  LL_RCC_PLL_EnableDomain_SYS();
+	  LL_RCC_PLL_Enable();
 
-   /* Wait till System clock is ready */
-  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_MSI)
-  {
+	   /* Wait till PLL is ready */
+	  while(LL_RCC_PLL_IsReady() != 1)
+	  {
 
-  }
-  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
-  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+	  }
+	  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
-  LL_Init1msTick(4000000);
+	   /* Wait till System clock is ready */
+	  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+	  {
 
-  LL_SetSystemCoreClock(4000000);
+	  }
+	  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+	  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
+	  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+
+	  LL_Init1msTick(80000000);
+
+	  LL_SetSystemCoreClock(80000000);
 }
 
 void PeriphCommonClock_Config(void)
 {
-  LL_RCC_PLLSAI1_ConfigDomain_ADC(LL_RCC_PLLSOURCE_MSI, LL_RCC_PLLM_DIV_1, 8, LL_RCC_PLLSAI1R_DIV_2);
+  LL_RCC_PLLSAI1_ConfigDomain_ADC(LL_RCC_PLLSOURCE_MSI, LL_RCC_PLLM_DIV_1, 16, LL_RCC_PLLSAI1R_DIV_2);
   LL_RCC_PLLSAI1_EnableDomain_ADC();
   LL_RCC_PLLSAI1_Enable();
 
