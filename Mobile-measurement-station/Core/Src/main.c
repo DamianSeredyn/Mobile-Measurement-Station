@@ -112,10 +112,9 @@ int main(void)
   /* Initialize all configured peripherals */
 
   MX_GPIO_Init();
-/*  MX_TIM5_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  MX_TIM4_Init();*/
+  MX_TIM4_Init();
   MX_SPI2_Init();
 
   /* USER CODE BEGIN 2 */
@@ -124,23 +123,24 @@ int main(void)
   ADC_Init();
 
 
-/*  Init_OLED();
-  BME280_init();*/
+//  Init_OLED();
+  BME280_init();
 
   	nRF24_InitGPIO();
   	nRF24_Init(nRF24_RECEIVER);
     nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
     nRF24_SetTXAddress((uint8_t *)"Nad",nRF24_RECEIVER);
     nRF24_RX_Mode(nRF24_RECEIVER);
-  	nRF24_Init(nRF24_TRANSMITER);
+  	/*nRF24_Init(nRF24_TRANSMITER);
     nRF24_SetRXAddress(0, (uint8_t *)"Nad",nRF24_TRANSMITER);
     nRF24_SetTXAddress((uint8_t *)"Odb",nRF24_TRANSMITER);
     nRF24_TX_Mode(nRF24_TRANSMITER);
-    uint8_t dsad = nRF24_ReadStatus(nRF24_TRANSMITER);
+    uint8_t dsad = nRF24_ReadStatus(nRF24_TRANSMITER);*/
     uint8_t dsad2 = nRF24_ReadStatus(nRF24_RECEIVER);
-    if (nRF24_Test(nRF24_TRANSMITER) == 129){
+/*    if (nRF24_Test(nRF24_TRANSMITER) == 129){
     	LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);
-    }
+    }*/
+    uint8_t dupa = BME280_test();
     LL_mDelay(100);
     LL_mDelay(100);
 /*    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
@@ -215,6 +215,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  Robot_Drive_Forward();
   }
 
 
