@@ -123,7 +123,7 @@ int main(void)
   ADC_Init();
 
 
-//  Init_OLED();
+Init_OLED();
   BME280_init();
 
   	nRF24_InitGPIO();
@@ -140,10 +140,10 @@ int main(void)
 /*    if (nRF24_Test(nRF24_TRANSMITER) == 129){
     	LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_5);
     }*/
-    uint8_t dupa = BME280_test();
+    //+uint8_t dupa = BME280_test();
     LL_mDelay(100);
     LL_mDelay(100);
-/*    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
+    uint8_t stat2 = nRF24_ReadStatus(nRF24_RECEIVER);
   	  uint8_t tablica[100];
   	  for (int j = 0; j < 100; j++){
   		  tablica[j] = 0;
@@ -151,7 +151,7 @@ int main(void)
   	  uint8_t size = 1;
 
   	  uint8_t i = 0;
-  	  uint8_t k = 0;*/
+  	  uint8_t k = 0;
 
 /*  nRF24_Init(nRF24_RECEIVER);
   nRF24_SetRXAddress(0, (uint8_t *)"Odb",nRF24_RECEIVER);
@@ -165,15 +165,17 @@ int main(void)
   	  //float test2 = BME280_read_temp();
   	//SendString((uint8_t *)"Test UART\n\r");
 
-  	  //PrintMeasurmentsFromBme280();
-  	  //Oled_print_dec();
 
+  	  float testbme = BME280_read_temp();
+  	uint32_t testbmep = BME280_read_pressure();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  /*if(nRF24_RXAvailible(nRF24_RECEIVER))
+
+
+	 if(nRF24_RXAvailible(nRF24_RECEIVER))
 	  	  	  	  {
 		  i++;
 		nRF24_ReadRXPaylaod(&tablica[i], &size, nRF24_RECEIVER);
@@ -201,21 +203,14 @@ int main(void)
 	  {
 		  i = 1;
 		  k = 0;
-	  }*/
-/*	  LL_mDelay(2000);
-		Oled_Fill(0x00);
-			  Oled_UpdateScreen();;
-	  Oled_print_dec();
-	  LL_mDelay(2000);
-	  Oled_Fill(0x00);
-	  Oled_UpdateScreen();
-	  PrintMeasurmentsFromBme280();*/
+	  }
+
 
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  Robot_Drive_Forward();
+	  //Robot_Drive_Forward();
   }
 
 

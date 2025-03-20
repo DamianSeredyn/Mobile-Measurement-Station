@@ -202,10 +202,10 @@ void Oled_print_dec(void)
 
 
 	sprintf(buffer1, "dB: %u", dec);
-	ssd1306_SetCursor(0, 0);
+	ssd1306_SetCursor(0, 10);
 	ssd1306_WriteString(buffer1, Font_7x10, White);
-	ssd1306_SetCursor(0, Font_7x10.FontHeight);
-	ssd1306_WriteString(buffer2, Font_7x10, White);
+	//ssd1306_SetCursor(0, Font_7x10.FontHeight);
+	//ssd1306_WriteString(buffer2, Font_7x10, White);
 
 	Oled_UpdateScreen();
 
